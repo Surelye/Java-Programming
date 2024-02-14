@@ -1,7 +1,3 @@
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
