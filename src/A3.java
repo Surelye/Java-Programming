@@ -1,6 +1,13 @@
+package task3;
+
+import java.util.List;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Scanner;
 import java.io.File;
+import java.util.ArrayList;
 import java.io.FileNotFoundException;
-import java.util.*;
 
 public class A3 {
 
@@ -96,8 +103,8 @@ public class A3 {
     public A3(String filename) {
         this.filename = filename;
         readFileEntries();
-        Comparator<FileEntry> comparator = Comparator.comparing(FileEntry::getCompanyRating)
-                .reversed()
+        Comparator<FileEntry> comparator = Comparator.comparing(FileEntry::getCompanyRating,
+                        Comparator.reverseOrder())
                 .thenComparing(FileEntry::getSurname)
                 .thenComparing(FileEntry::getName)
                 .thenComparing(FileEntry::getPatronymic);
