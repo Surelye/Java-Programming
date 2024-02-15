@@ -28,7 +28,7 @@ public class C4 {
             new Product("Напитки алкогольные: бурбон", 235),
             new Product("Напитки безалкогольные: вода", 0),
             new Product("Соки и компоты: томатный сок", 21),
-            new Product("McDonalds: десерт Маффин с чёрной смородиной", 370)
+            new Product("McDonald's: десерт Маффин с чёрной смородиной", 370)
     };
     private final int numProducts = products.length;
     private final Random random = new Random();
