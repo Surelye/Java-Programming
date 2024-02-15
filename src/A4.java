@@ -45,7 +45,7 @@ public class A4 {
         try {
             thread.join();
         } catch (InterruptedException e) {
-            System.out.printf("[WARNING] Поток %s был прерван.%n", thread.getName());
+            System.out.printf("[WARNING] Поток %s был прерван%n", thread.getName());
             return;
         }
         System.out.printf("> Завершение работы потока %s%n", thread.getName());
@@ -75,7 +75,7 @@ public class A4 {
             semaphore.acquire();
             inc(times);
         } catch (InterruptedException e) {
-            System.out.println("[WARNING] Захват значения семафора не удался");
+            System.out.println("[WARNING] Захват значения семафора не удался%n");
             return;
         }
         semaphore.release();
