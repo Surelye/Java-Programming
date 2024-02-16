@@ -10,7 +10,7 @@ public class A6 {
         return ((num & 1) == 0);
     }
 
-    private void selectPredicate(IntStream intStream) {
+    private void filter(IntStream intStream) {
         System.out.println(
                 """
                 > Выберите условие обработки
@@ -58,7 +58,7 @@ public class A6 {
             if (leftBorder > rightBorder) {
                 throw new RuntimeException("Левая граница превышает значение правой границы");
             }
-            selectPredicate(IntStream.range(leftBorder, rightBorder + 1));
+            filter(IntStream.range(leftBorder, rightBorder + 1));
         } catch (Exception e) {
             System.out.printf("> В ходе работы программы было получено исключение: %s%n",
                     e.getMessage());
