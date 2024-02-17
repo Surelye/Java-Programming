@@ -4,14 +4,54 @@ import java.sql.*;
 
 public class A7 {
 
-    private void printDepartments(ResultSet resultSet) throws SQLException {
-        System.out.println("> Отделы и их средние зарплаты: ");
+    private void createTable(Statement statement) throws SQLException {
+        statement.execute("""
+                CREATE TABLE employeesAge (
+                    id SERIAL PRIMARY KEY,
+                    employeeName VARCHAR(50) NOT NULL,
+                    age SMALLINT NOT NULL
+                );
+                    """);
+        statement.execute("""
+                INSERT INTO employeesAge
+                VALUES(0, 'Kirill', 18),
+                    (1, 'Sasha', 20),
+                    (2, 'Katya', 25),
+                    (3, 'Sonya', 19),
+                    (4, 'Artur', 23),
+                    (5, 'Misha', 19),
+                    (6, 'Vanya', 24);
+                """);
+    }
+
+    private ResultSet filterOlderThan20(Statement statement) throws SQLException {
+        return statement.executeQuery("""
+                SELECT *
+                FROM employeesAge
+                WHERE age > 20
+                """
+        );
+    }
+
+    private void printResult(ResultSet resultSet) throws SQLException {
+        int countRows = 0;
+        System.out.println("> Сотрудники старше 20 лет: ");
         while (resultSet.next()) {
-            String departmentName = resultSet.getString(1);
-            int averageSalary = resultSet.getInt(2);
-            System.out.printf("> Отдел{наименование: %s, средняя зарплата: %d}%n"
-                    .formatted(departmentName, averageSalary));
+            int id = resultSet.getInt(1);
+            String name = resultSet.getString(2);
+            int age = resultSet.getInt(3);
+            System.out.printf("> Сотрудник{id: %d, имя: %s, возраст: %s}%n", id, name, age);
+            ++countRows;
         }
+        if (countRows == 0) {
+            System.out.println("> Сотрудников старше 20 лет нет.");
+        }
+    }
+
+    private void dropEmployeesAgeTable(Statement statement) throws SQLException {
+        statement.execute("""
+                DROP TABLE employeesAge;
+                """);
     }
 
     public void run() throws SQLException {
@@ -20,31 +60,10 @@ public class A7 {
                 "postgres", "admin"
         );
         Statement statement = connection.createStatement();
-        statement.execute("""
-                CREATE TABLE departmentSalary (
-                    id SERIAL PRIMARY KEY,
-                    employeeName VARCHAR(50) NOT NULL,
-                    departmentName VARCHAR(20) NOT NULL,
-                    salary INTEGER NOT NULL
-                );
-                    """);
-        statement.execute("""
-                INSERT INTO departmentSalary
-                VALUES(0, 'Kirill', 'IT', 30000),
-                    (1, 'Ivan', 'IT', 20000),
-                    (2, 'Masha', 'HR', 40000),
-                    (3, 'Sonya', 'HR', 35000)
-                """);
-        ResultSet departmentsWithAverageSalary = statement.executeQuery("""
-                SELECT departmentName, AVG(salary)
-                FROM departmentSalary
-                GROUP BY departmentName
-                """
-        );
-        printDepartments(departmentsWithAverageSalary);
-        statement.execute("""
-                DROP TABLE departmentSalary;
-                """);
+        createTable(statement);
+        ResultSet olderThan20 = filterOlderThan20(statement);
+        printResult(olderThan20);
+        dropEmployeesAgeTable(statement);
     }
 
     public static void main(String[] args) throws SQLException {
